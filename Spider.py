@@ -212,7 +212,8 @@ for url in urls:
 			f.write(string)
 			string = ""
 
-
+with open(OutputFileName, "a") as f:
+	f.write(string)
 
 
 
