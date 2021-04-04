@@ -26,6 +26,8 @@ def banner():
 
 		""")
 
+
+
 def usage():
 	print("""
 
@@ -185,29 +187,34 @@ for url in urls:
 			for a in tags:
 				alink = a.attrs.get("href")
 				if alink.startswith("/"):
-					urls.append(proto + domain + alink)
+					urls.append(proto + "://" + domain + alink)
 				elif alink.startswith(url) or re.findall(rf".+:\/\/.*{domain}", url) :
 					urls.append(alink)
 		else:
 			for a in tags:
 				alink = a.attrs.get("href")
 				if alink.startswith("/"):
-					urls.append(proto + domain + alink)
+					urls.append(proto + "://" + domain + alink)
 				elif alink.startswith(url) or re.findall(rf".+:\/\/.*{domain}", url) :
 					urls.append(alink)
 				else:
 					urls.append(alink)
 
 	except requests.Timeout :
-		print(colored(f"[-] {url}: Timeout"), "red")
+		print(colored(f"[-] {url}: Timeout", "red"))
+		print(colored(f"--------------------------------------", "blue"))
 	urls = list(set(urls))
 	urls.remove(url)
-	string = string + url + "\n"
+	string = string + url + ": "+ str(res1.status_code) + "\n"
 
 	if index >= 20:
 		with open(OutputFileName, "a") as f :
 			f.write(string)
 			string = ""
+
+
+
+
 
 
 
