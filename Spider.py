@@ -60,6 +60,10 @@ for arg in args:
 			OutputFileName = args[n]
 		elif arg == "--single-domain":
 			SingleDomain = 1
+		elif arg == "--urls":
+			to_save = "urls"
+		elif arg == "--contents":
+			to_save = "contents"
 		elif arg == "--timeout" or arg == "-t":
 			try :
 				timeoutValue = int(args[n])
@@ -200,7 +204,10 @@ while urls != []:
 			print(colored("[!] ERROR: " + str(err)))
 		urls = list(set(urls))
 		urls.remove(url)
-		string = string + str(res1.text) + "\n\n\n---------------------------------------------------------------------------\n\n\n"
+		if to_save == "urls":
+			string = string + url + ": " + str(res1.status_code)
+		if to_save == "contents":
+			string = string + str(res1.text) + "\n\n\n---------------------------------------------------------------------------\n\n\n"
 
 		if index >= 20:
 			with open(OutputFileName, "a") as f :
