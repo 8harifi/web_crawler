@@ -8,15 +8,6 @@ from termcolor import colored
 def banner():
 	print("""
 
-
-
-██╗░░░░░██╗███████╗░█████╗░██████╗░██████╗░  ███╗░░░███╗░█████╗░██████╗░███████╗  
-██║░░░░░██║╚════██║██╔══██╗██╔══██╗██╔══██╗  ████╗░████║██╔══██╗██╔══██╗██╔════╝  
-██║░░░░░██║░░███╔═╝███████║██████╔╝██║░░██║  ██╔████╔██║███████║██║░░██║█████╗░░  
-██║░░░░░██║██╔══╝░░██╔══██║██╔══██╗██║░░██║  ██║╚██╔╝██║██╔══██║██║░░██║██╔══╝░░  
-███████╗██║███████╗██║░░██║██║░░██║██████╔╝  ██║░╚═╝░██║██║░░██║██████╔╝███████╗  
-╚══════╝╚═╝╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝╚═════╝░  ╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═════╝░╚══════╝  
-
 ░██╗░░░░░░░██╗███████╗██████╗░  ░█████╗░██████╗░░█████╗░░██╗░░░░░░░██╗██╗░░░░░███████╗██████╗░
 ░██║░░██╗░░██║██╔════╝██╔══██╗  ██╔══██╗██╔══██╗██╔══██╗░██║░░██╗░░██║██║░░░░░██╔════╝██╔══██╗
 ░╚██╗████╗██╔╝█████╗░░██████╦╝  ██║░░╚═╝██████╔╝███████║░╚██╗████╗██╔╝██║░░░░░█████╗░░██████╔╝
@@ -50,7 +41,7 @@ if len(args) < 1 :
 	usage()
 	exit()
 
-SingleDomain = False
+SingleDomain = 0
 
 
 urls = []
@@ -68,12 +59,12 @@ for arg in args:
 		if arg == "-o" or arg == "--output":
 			OutputFileName = args[n]
 		elif arg == "--single-domain":
-			SingleDomain = True
+			SingleDomain = 1
 		elif arg == "--timeout" or arg == "-t":
 			try :
 				timeoutValue = int(args[n])
 			except:
-				print("[!] ERROR: Please select a valid number for timeout value")
+				print(colored("[!] ERROR: Please select a valid number for timeout value", 'red'))
 				exit()
 
 	else:
@@ -88,10 +79,10 @@ for arg in args:
 
 
 if len(urls) > 1:
-	print("[!] ERROR: more than one url was given")
+	print(colored("[!] ERROR: more than one url was given", 'red'))
 	exit()
 elif len(urls) < 1:
-	print("[!] Please specify a URL")
+	print(colored("[!] ERROR: Please specify a URL", 'red'))
 	exit()
 else:
 	mainURL = urls[0]
@@ -165,58 +156,58 @@ index = 0
 string = ""
 
 
-for url in urls:
-	index = index + 1
-	print(colored(f"[*] Sending request to {url}", 'yellow'))
-	try:
-		if timeoutValue :
-			res1 = requests.get(url = url, timeout = timeoutValue)
-		else :
-			res1 = requests.get(url)
+while urls != []:
 
-		if res1.status_code == 200:
-			print(colored(f"[+] {url}: {res1.status_code}", 'green'))
-		else:
-			print(colored(f"[-] {url}: {res1.status_code}", 'red'))
-		print(colored(f"[*] Looking for Urls in {url}", 'yellow'))
-		soup = bs(res1.text, "html.parser")
-		tags = soup.select("a[href]")
-		print(colored(f"[+] {len(tags)} urls was found in '{url}'", 'green'))
-		print(colored("--------------------------------------", 'blue'))
-		if SingleDomain :
-			for a in tags:
-				alink = a.attrs.get("href")
-				if alink.startswith("/"):
-					urls.append(proto + "://" + domain + alink)
-				elif alink.startswith(url) or re.findall(rf".+:\/\/.*{domain}", url) :
-					urls.append(alink)
-		else:
-			for a in tags:
-				alink = a.attrs.get("href")
-				if alink.startswith("/"):
-					urls.append(proto + "://" + domain + alink)
-				elif alink.startswith(url) or re.findall(rf".+:\/\/.*{domain}", url) :
-					urls.append(alink)
-				else:
-					urls.append(alink)
+	for url in urls:
+		index = index + 1
+		print(colored(f"[*] Sending request to {url}", 'yellow'))
+		try:
+			if timeoutValue :
+				res1 = requests.get(url = url, timeout = timeoutValue)
+			else :
+				res1 = requests.get(url)
 
-	except requests.Timeout :
-		print(colored(f"[-] {url}: Timeout", "red"))
-		print(colored(f"--------------------------------------", "blue"))
-	urls = list(set(urls))
-	urls.remove(url)
-	string = string + url + ": "+ str(res1.status_code) + "\n"
+			if res1.status_code == 200:
+				print(colored(f"[+] {url}: {res1.status_code}", 'green'))
+			else:
+				print(colored(f"[-] {url}: {res1.status_code}", 'red'))
+			print(colored(f"[*] Looking for Urls in {url}", 'yellow'))
+			soup = bs(res1.text, "html.parser")
+			tags = soup.select("a[href]")
+			print(colored(f"[+] {len(list(set(tags)))} urls was found in '{url}'", 'green'))
+			print(colored("--------------------------------------", 'blue'))
+			if SingleDomain == 1 :
+				for a in tags:
+					alink = a.attrs.get("href")
+					if alink.startswith("/"):
+						urls.append(proto + "://" + domain + alink)
+					elif alink.startswith(url) or re.findall(rf".+:\/\/.*{domain}", url) :
+						urls.append(alink)
+			elif SingleDomain == 0:
+				for a in tags:
+					alink = a.attrs.get("href")
+					if alink.startswith("/"):
+						urls.append(proto + "://" + domain + alink)
+					elif alink.startswith(url) or re.findall(rf".+:\/\/.*{domain}", url) :
+						urls.append(alink)
+					else:
+						urls.append(alink)
 
-	if index >= 20:
-		with open(OutputFileName, "a") as f :
-			f.write(string)
-			string = ""
+		except requests.Timeout :
+			print(colored(f"[-] {url}: Timeout", "red"))
+			print(colored(f"--------------------------------------", "blue"))
+		except Exception as err:
+			print(colored("[!] ERROR: " + str(err)))
+		urls = list(set(urls))
+		urls.remove(url)
+		string = string + str(res1.text) + "\n"
+
+		if index >= 20:
+			with open(OutputFileName, "a") as f :
+				f.write(string)
+				string = ""
 
 with open(OutputFileName, "a") as f:
 	f.write(string)
-
-
-
-
 
 
