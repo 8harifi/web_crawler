@@ -205,7 +205,7 @@ while urls != []:
 		urls = list(set(urls))
 		urls.remove(url)
 		if to_save == "urls":
-			string = string + url + ": " + str(res1.status_code)
+			string = string + url + ": " + str(res1.status_code) + "\n"
 		if to_save == "contents":
 			string = string + str(res1.text) + "\n\n\n---------------------------------------------------------------------------\n\n\n"
 
