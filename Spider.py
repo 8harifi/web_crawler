@@ -95,54 +95,7 @@ else:
 with open(OutputFileName, 'w') as f :
 	pass
 
-"""
 
-proto = ''
-
-
-
-for url in urls:
-	if url.startswith("https://"):
-		proto = "https://"
-		rdomain = re.findall(r"https:\/\/(.+?)\/", url)
-		if len(rdomain) == 1:
-			domains.append(rdomain[0])
-		elif len(rdomain) > 1:
-			print(colored("[!] Unknown ERROR", 'red'))
-			exit()
-		elif len(rdomain) < 1 :
-			rdomain = re.findall(r'https:\/\/(.+)', url)
-			if len(rdomain) == 1:
-				domains.append(rdomain[0])
-			else:
-				print(colored("[!] Unknown ERROR", 'red'))
-
-	elif url.startswith("http://"):
-		proto = "http://"
-		rdomain = re.findall(r"http:\/\/(.+?)\/", url)
-		if len(rdomain) == 1:
-			domains.append(rdomain[0])
-		elif len(rdomain) > 1:
-			print(colored("[!] Unknown ERROR", 'red'))
-			exit()
-		elif len(rdomain) < 1 :
-			rdomain = re.findall(r'http:\/\/(.+)', url)
-			if len(rdomain) == 1:
-				domains.append(rdomain[0])
-			else :
-				print(colored("[!] Unknown ERROR", 'red'))
-	else:
-		print(colored("[!] ERROR: please enter a valid URL(EX: https://example.net)", 'red'))
-		print(colored("[!] ERROR: only HTTP and HTTPS can be accepted", 'red'))
-
-
-if len(domains) > 1:
-	print(colored("[!] ERROR: more than one domain found, but the '--single-domain' option is used", 'red'))
-elif len(domains) < 1:
-	print(colored("[!] ERROR: no Domain was found, check the url and try again", 'red'))
-elif len(domains) == 1:
-	domain = domains[0]
-"""
 
 
 
