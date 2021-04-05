@@ -25,6 +25,8 @@ def usage():
 		--single-domain                  only crawl one domain, crawl all domains
 		--output                 -o      outout file's name
 		--time-out               -t      set a time out for the requests
+		--contents			 to save contents of every page
+		--urls				 to save only urls
 
 		""")
 
