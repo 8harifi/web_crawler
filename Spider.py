@@ -51,7 +51,7 @@ OutputFileName = "output.txt"
 timeoutValue = ""
 
 n = 0
-
+to_save = "urls"
 
 for arg in args:
 	n = n + 1
