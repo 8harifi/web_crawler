@@ -200,7 +200,7 @@ while urls != []:
 			print(colored("[!] ERROR: " + str(err)))
 		urls = list(set(urls))
 		urls.remove(url)
-		string = string + str(res1.text) + "\n"
+		string = string + str(res1.text) + "\n\n\n---------------------------------------------------------------------------\n\n\n"
 
 		if index >= 20:
 			with open(OutputFileName, "a") as f :
