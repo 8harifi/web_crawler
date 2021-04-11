@@ -7,30 +7,34 @@ from termcolor import colored
 
 def banner():
 	print("""
-
 ░██╗░░░░░░░██╗███████╗██████╗░  ░█████╗░██████╗░░█████╗░░██╗░░░░░░░██╗██╗░░░░░███████╗██████╗░
 ░██║░░██╗░░██║██╔════╝██╔══██╗  ██╔══██╗██╔══██╗██╔══██╗░██║░░██╗░░██║██║░░░░░██╔════╝██╔══██╗
 ░╚██╗████╗██╔╝█████╗░░██████╦╝  ██║░░╚═╝██████╔╝███████║░╚██╗████╗██╔╝██║░░░░░█████╗░░██████╔╝
 ░░████╔═████║░██╔══╝░░██╔══██╗  ██║░░██╗██╔══██╗██╔══██║░░████╔═████║░██║░░░░░██╔══╝░░██╔══██╗
 ░░╚██╔╝░╚██╔╝░███████╗██████╦╝  ╚█████╔╝██║░░██║██║░░██║░░╚██╔╝░╚██╔╝░███████╗███████╗██║░░██║
 ░░░╚═╝░░░╚═╝░░╚══════╝╚═════╝░  ░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚══════╝╚══════╝╚═╝░░╚═╝
-
 		""")
 
 
 
 def usage():
 	print("""
-
 		--single-domain                  only crawl one domain, crawl all domains
 		--output                 -o      outout file's name
 		--time-out               -t      set a time out for the requests
 		--contents			 to save contents of every page
 		--urls				 to save only urls
-
 		""")
 
 
+def get_proto_and_domain(mainURL):
+	"""
+	this will extract domain and the protocol from mainURL using regular expression and return them
+	"""
+	tmpRes = re.findall(r"(.+):\/\/(.+)", mainURL)
+	proto = tmpRes[0][0]
+	domain = tmpRes[0][1]
+	return proto, domain
 
 banner()
 
@@ -98,16 +102,7 @@ with open(OutputFileName, 'w') as f :
 	pass
 
 
-
-
-
-tmpRes = re.findall(r"(.+):\/\/(.+)", mainURL)
-
-proto = tmpRes[0][0]
-domain = tmpRes[0][1]
-
-
-
+prot, domain = get_proto_and_domain(mainURL)
 
 
 index = 0
@@ -171,5 +166,3 @@ while urls != []:
 
 with open(OutputFileName, "a") as f:
 	f.write(string)
-
-
