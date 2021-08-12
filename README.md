@@ -1,2 +1,2 @@
-# lizard_made_web_crawler
+# web_crawler
 A very simple Web Crawler with python3 :/
